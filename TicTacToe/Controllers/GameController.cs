@@ -18,7 +18,6 @@ namespace TicTacToe.Controllers
         [HttpGet]
         public Array Get()
         {
-            
             return Board.board;
         }
 
@@ -39,18 +38,15 @@ namespace TicTacToe.Controllers
                     return Ok("You win");
                 }
             }
-            else if (count == Board.board.Length)
-                return Ok("DRAW");
             else
+            {
+                count--;
                 return BadRequest("Place already taken");
-            
-            return Ok();
-        }
+            }
+            if (count == Board.board.Length)
+                return Ok("DRAW");
 
-        // POST: api/Game
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
+            return Ok(Board.board);
         }
 
         // PUT: api/Game/5
@@ -61,9 +57,13 @@ namespace TicTacToe.Controllers
         }
 
         // DELETE: api/ApiWithActions/5
+        [Route("restart")]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public Array Delete(int id)
         {
+            Board.board = new int[,] { { -1, -1, -1 }, { -1, -1, -1 }, { -1, -1, -1 } };
+            count = 0;
+            return Board.board;
         }
     }
 }
